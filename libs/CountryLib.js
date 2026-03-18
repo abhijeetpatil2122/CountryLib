@@ -2693,37 +2693,50 @@ function search(text){
 
   requireParam("search", "text", text)
 
-  text = String(text).toLowerCase()
+  text = String(text).trim().toLowerCase()
 
   let results = []
 
   for(let code in COUNTRIES){
 
     let c = COUNTRIES[code]
+    let name = c.name.toLowerCase()
+    let score = 0
 
-    if(c.name.toLowerCase().includes(text)){
-
-      results.push({
-        code: code,
-        name: c.name,
-        flag: getFlag(code)
-      })
-
-      continue
+    // exact match
+    if(name === text){
+      score = 100
     }
 
-    if(c.alt){
+    // starts with
+    else if(name.startsWith(text)){
+      score = 80
+    }
+
+    // contains
+    else if(name.includes(text)){
+      score = 60
+    }
+
+    // check alt names
+    else if(c.alt){
 
       for(let alt of c.alt){
 
-        if(alt.toLowerCase().includes(text)){
+        alt = alt.toLowerCase()
 
-          results.push({
-            code: code,
-            name: c.name,
-            flag: getFlag(code)
-          })
+        if(alt === text){
+          score = 90
+          break
+        }
 
+        if(alt.startsWith(text)){
+          score = 70
+          break
+        }
+
+        if(alt.includes(text)){
+          score = 50
           break
         }
 
@@ -2731,7 +2744,23 @@ function search(text){
 
     }
 
+    if(score > 0){
+
+      results.push({
+        code: code,
+        name: c.name,
+        flag: getFlag(code),
+        score: score
+      })
+
+    }
+
   }
+
+  // sort by relevance
+  results.sort(function(a,b){
+    return b.score - a.score
+  })
 
   return results
 
