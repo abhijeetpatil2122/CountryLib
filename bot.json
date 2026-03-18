@@ -1,7 +1,0 @@
-{
-  "bb_sync_version": "1.0",
-  "name": "CountryLib",
-  "description": "A comprehensive library for managing country-related data, including information on names, capitals, currencies, and more.",
-  "version": "1.0.0",
-  "git_remote": "https://github.com/abhijeetpatil2122/CountryLib.git"
-}
