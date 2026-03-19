@@ -2768,32 +2768,98 @@ function search(text){
 
 
 // =============================
-// LIST ALL COUNTRIES
+// LIST COUNTRIES
 // =============================
-function list(){
+function list(fields){
 
   let codes = Object.keys(COUNTRIES).sort()
   let count = codes.length
 
-  let text = "🌍 <b>All Available Countries From Libs.country</b>\n"
-  text += "Total: <b>" + count + "</b>\n\n"
+  // DEFAULT (old behaviour)
+  if(!fields){
+
+    let text = "🌍 <b>All Available Countries From Libs.CountryLib</b>\n"
+    text += "Total: <b>" + count + "</b>\n\n"
+
+    for(let code of codes){
+
+      let c = COUNTRIES[code]
+      let alt = c.alt || []
+
+      text += getFlag(code) + " " + c.name + " (" + code + ")"
+
+      if(alt.length){
+        text += " — " + alt.join(", ")
+      }
+
+      text += "\n"
+
+    }
+
+    return text
+  }
+
+  // convert string to array
+  if(typeof(fields) == "string"){
+    fields = [fields]
+  }
+
+  let text = ""
 
   for(let code of codes){
 
     let c = COUNTRIES[code]
-    let alt = c.alt || []
+    let row = []
 
-    text += getFlag(code) + " " + c.name + " (" + code + ")"
+    for(let f of fields){
 
-    if(alt.length){
-      text += " — " + alt.join(", ")
+      f = String(f).toLowerCase()
+
+      if(f == "code"){
+        row.push(code)
+      }
+
+      else if(f == "name"){
+        row.push(c.name)
+      }
+
+      else if(f == "flag"){
+        row.push(getFlag(code))
+      }
+
+      else if(f == "phone" && c.phone){
+        row.push(c.phone)
+      }
+
+      else if(f == "currency" && c.currency){
+        row.push(c.currency)
+      }
+
+      else if(f == "capital" && c.capital){
+        row.push(c.capital)
+      }
+
+      else if(f == "continent" && c.continent){
+        row.push(c.continent)
+      }
+
+      else if(f == "timezone" && c.timezone){
+        row.push(c.timezone.join(", "))
+      }
+
+      else{
+        throw new Error(LIB_PREFIX + ".list(): Unknown field '" + f + "'")
+      }
+
     }
 
-    text += "\n"
+    if(row.length){
+      text += row.join(" ") + "\n"
+    }
 
   }
 
-  return text
+  return text.trim()
 
 }
 
