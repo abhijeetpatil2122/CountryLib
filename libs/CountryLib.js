@@ -2700,26 +2700,23 @@ function search(text){
   for(let code in COUNTRIES){
 
     let c = COUNTRIES[code]
-    let name = c.name.toLowerCase()
     let score = 0
 
-    // exact match
+    let name = c.name.toLowerCase()
+
+    // NAME MATCH
     if(name === text){
       score = 100
     }
-
-    // starts with
     else if(name.startsWith(text)){
       score = 80
     }
-
-    // contains
     else if(name.includes(text)){
       score = 60
     }
 
-    // check alt names
-    else if(c.alt){
+    // ALT NAMES
+    if(!score && c.alt){
 
       for(let alt of c.alt){
 
@@ -2737,6 +2734,65 @@ function search(text){
 
         if(alt.includes(text)){
           score = 50
+          break
+        }
+
+      }
+
+    }
+
+    // ISO CODE
+    if(!score){
+      if(code.toLowerCase() === text){
+        score = 95
+      }
+    }
+
+    // PHONE
+    if(!score && c.phone){
+      let phone = c.phone.replace(/-/g,"").toLowerCase()
+
+      if(phone.startsWith(text)){
+        score = 85
+      }
+    }
+
+    // CAPITAL
+    if(!score && c.capital){
+
+      let capital = c.capital.toLowerCase()
+
+      if(capital.includes(text)){
+        score = 65
+      }
+
+    }
+
+    // CURRENCY
+    if(!score && c.currency){
+
+      if(c.currency.toLowerCase() === text){
+        score = 75
+      }
+
+    }
+
+    // CONTINENT
+    if(!score && c.continent){
+
+      if(c.continent.toLowerCase().includes(text)){
+        score = 40
+      }
+
+    }
+
+    // TIMEZONE
+    if(!score && c.timezone){
+
+      for(let tz of c.timezone){
+
+        if(tz.toLowerCase().includes(text)){
+          score = 30
           break
         }
 
