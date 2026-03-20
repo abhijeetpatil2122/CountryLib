@@ -2855,7 +2855,7 @@ function list(fields){
     return text
   }
 
-  // convert string to array
+  // convert string → array
   if(typeof(fields) == "string"){
     fields = [fields]
   }
@@ -2871,38 +2871,47 @@ function list(fields){
 
       f = String(f).toLowerCase()
 
+      // CODE
       if(f == "code"){
         row.push(code)
       }
 
+      // NAME
       else if(f == "name"){
-        row.push(c.name)
+        row.push(c.name || "-")
       }
 
+      // FLAG
       else if(f == "flag"){
         row.push(getFlag(code))
       }
 
-      else if(f == "phone" && c.phone){
-        row.push(c.phone)
+      // PHONE
+      else if(f == "phone"){
+        row.push(c.phone || "-")
       }
 
-      else if(f == "currency" && c.currency){
-        row.push(c.currency)
+      // CURRENCY
+      else if(f == "currency"){
+        row.push(c.currency || "-")
       }
 
-      else if(f == "capital" && c.capital){
-        row.push(c.capital)
+      // CAPITAL
+      else if(f == "capital"){
+        row.push(c.capital || "-")
       }
 
-      else if(f == "continent" && c.continent){
-        row.push(c.continent)
+      // CONTINENT
+      else if(f == "continent"){
+        row.push(c.continent || "-")
       }
 
-      else if(f == "timezone" && c.timezone){
-        row.push(c.timezone.join(", "))
+      // TIMEZONE
+      else if(f == "timezone"){
+        row.push(c.timezone ? c.timezone.join(", ") : "-")
       }
 
+      // INVALID FIELD
       else{
         throw new Error(LIB_PREFIX + ".list(): Unknown field '" + f + "'")
       }
