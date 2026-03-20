@@ -3217,19 +3217,19 @@ function fromUser(u){
 publish({
   listByContinent:listByContinent,
   listContinents:listContinents,
+  detectByPhone:detectByPhone,
   getContinent:getContinent,
   getCurrency:getCurrency,
   getTimezone:getTimezone,
   getCapital:getCapital,
-  detectByPhone:detectByPhone,
   getPhone:getPhone,
+  fromUser:fromUser,
   getCode:getCode,
   getFlag:getFlag,
   getName:getName,
   random:random,
   search:search,
-  format:format,
-  fromUser:fromUser,
+  format:format
   info:info,
   list:list
 })
